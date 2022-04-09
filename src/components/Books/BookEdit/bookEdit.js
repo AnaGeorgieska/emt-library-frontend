@@ -24,7 +24,7 @@ const BookEdit = (props) => {
         const availableCopies = formData.availableCopies !== 0 ? formData.availableCopies : props.book.availableCopies;
 
         props.onEditBook(props.book.id, name, category, author, availableCopies);
-        window.location.href = "/books"
+        window.location.href = "/"
 
     }
 
@@ -33,7 +33,7 @@ const BookEdit = (props) => {
             <div className={"row mt-5"}>
                 <div className={"col-md-5"}>
                     <form onSubmit={onFormSubmit}>
-                        <div className={"form-group"}>
+                        <div className={"form-group mt-2"}>
                             <label htmlFor="name">Book name</label>
                             <input type="text"
                                    className="form-control"
@@ -45,7 +45,7 @@ const BookEdit = (props) => {
                                    onChange={handleChange}
                             />
                         </div>
-                        <div className="form-group">
+                        <div className="form-group mt-2">
                             <label>Category</label>
                             <select name="category" className="form-control" onChange={handleChange}>
                                 {props.categories.map((term) => {
@@ -58,7 +58,7 @@ const BookEdit = (props) => {
                                 )}
                             </select>
                         </div>
-                        <div className="form-group">
+                        <div className="form-group mt-2">
                             <label>Author</label>
                             <select name="author" className="form-control" onChange={handleChange}>
                                 {props.authors.map((term) => {
@@ -70,7 +70,7 @@ const BookEdit = (props) => {
                                 })}
                             </select>
                         </div>
-                        <div className="form-group">
+                        <div className="form-group mt-2">
                             <label htmlFor="availableCopies">Available copies</label>
                             <input type="text"
                                    className="form-control"
@@ -82,7 +82,7 @@ const BookEdit = (props) => {
                                    onChange={handleChange}
                             />
                         </div>
-                        <button id="submit" type="submit" className="btn btn-primary">Submit</button>
+                        <button id="submit" type="submit" className="btn btn-primary mt-2">Submit</button>
                     </form>
                 </div>
             </div>
