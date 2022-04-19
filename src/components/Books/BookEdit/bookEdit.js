@@ -1,6 +1,12 @@
-import React from "react";
+import React, {useEffect} from "react";
+import {useNavigate, useParams} from 'react-router-dom';
+// import {Axios} from "axios";
+import axios from "../../../custom-axios/axios";
 
 const BookEdit = (props) => {
+
+    const history = useNavigate();
+    const { id } = useParams();
 
     const [formData, updateFormData] = React.useState({
         name: "",
@@ -9,6 +15,8 @@ const BookEdit = (props) => {
         availableCopies: 0
     })
 
+    const {name, category, author, availableCopies} = formData;
+
     const handleChange = (e) => {
         updateFormData({
             ...formData,
@@ -16,58 +24,58 @@ const BookEdit = (props) => {
         })
     }
 
-    const onFormSubmit = (e) => {
+    useEffect(()=>{
+        loadBook();
+    },[]);
+
+    const onFormSubmit = async (e) => {
         e.preventDefault();
-        const name = formData.name !== "" ? formData.name : props.book.name;
-        const category = formData.category !== "NOVEL" ? formData.category : props.book.category;
-        const author = formData.author !== 1 ? formData.author : props.book.author.id;
-        const availableCopies = formData.availableCopies !== 0 ? formData.availableCopies : props.book.availableCopies;
 
-        props.onEditBook(props.book.id, name, category, author, availableCopies);
-        window.location.href = "/"
+        await axios.put(`/books/edit/${id}`,{
+            "name": name,
+            "category": category,
+            "author": author,
+            "availableCopies": availableCopies
+        });
+        window.location.href = "/";
+    }
 
+    const loadBook = async () => {
+        const result =await axios.get(`/books/dto/${id}`);
+        updateFormData(result.data)
     }
 
     return (
-        <div className={"container mm-4 mt-5"}>
-            <div className={"row mt-5"}>
-                <div className={"col-md-5"}>
+        <div className="container mm-4 mt-5">
+            <div className="row mt-5">
+                <div className="col-md-5">
                     <form onSubmit={onFormSubmit}>
-                        <div className={"form-group mt-2"}>
+                        <div className="form-group mt-2">
                             <label htmlFor="name">Book name</label>
                             <input type="text"
                                    className="form-control"
                                    id="name"
                                    name="name"
-                                // value={formData.name}
                                    required
-                                   placeholder={props.book.name}
+                                   placeholder="Enter book name"
+                                   value={name}
                                    onChange={handleChange}
                             />
                         </div>
                         <div className="form-group mt-2">
                             <label>Category</label>
-                            <select name="category" className="form-control" onChange={handleChange}>
-                                {props.categories.map((term) => {
-                                        if (props.book.category !== undefined &&
-                                            props.book.category === term)
-                                            return <option selected={props.book.category} value={term}>{term}</option>
-                                        else return <option value={term}>{term}</option>
-
-                                    }
+                            <select name="category" className="form-control" value={category} onChange={handleChange}>
+                                {props.categories.map((term) =>
+                                    <option value={term}>{term}</option>
                                 )}
                             </select>
                         </div>
                         <div className="form-group mt-2">
                             <label>Author</label>
-                            <select name="author" className="form-control" onChange={handleChange}>
-                                {props.authors.map((term) => {
-                                    if (props.book.author !== undefined &&
-                                        props.book.author.id === term.id)
-                                        return <option selected={props.book.author.id}
-                                                       value={term.id}>{term.name}</option>
-                                    else return <option value={term.id}>{term.name}</option>
-                                })}
+                            <select name="author" className="form-control" value={author} onChange={handleChange}>
+                                {props.authors.map((term) =>
+                                    <option value={term.id}>{term.name}</option>
+                                )}
                             </select>
                         </div>
                         <div className="form-group mt-2">
@@ -76,9 +84,9 @@ const BookEdit = (props) => {
                                    className="form-control"
                                    id="availableCopies"
                                    name="availableCopies"
-                                // value={props.book.availableCopies}
-                                   placeholder={props.book.availableCopies}
+                                   placeholder="Available copies"
                                    required
+                                   value={availableCopies}
                                    onChange={handleChange}
                             />
                         </div>
@@ -88,6 +96,6 @@ const BookEdit = (props) => {
             </div>
         </div>
     )
-
 }
+
 export default BookEdit;

@@ -1,5 +1,7 @@
 import React from "react";
 import {useNavigate} from 'react-router-dom';
+// import {Axios} from "axios";
+import axios from "../../../custom-axios/axios";
 
 const BookAdd = (props) => {
 
@@ -11,6 +13,8 @@ const BookAdd = (props) => {
         availableCopies: 0
     })
 
+    const {name, category, author, availableCopies} = formData;
+
     const handleChange = (e) => {
         updateFormData({
             ...formData,
@@ -18,15 +22,10 @@ const BookAdd = (props) => {
         })
     }
 
-    const onFormSubmit = (e) => {
+    const onFormSubmit = async (e) => {
         e.preventDefault();
-        const name = formData.name;
-        const category = formData.category;
-        const author = formData.author;
-        const availableCopies = formData.availableCopies;
-
-        props.onAddBook(name, category, author, availableCopies);
-        window.location.href = "/"
+        await axios.post("/books/add", formData);
+        window.location.href = "/";
     }
 
     return (
@@ -42,12 +41,13 @@ const BookAdd = (props) => {
                                    name="name"
                                    required
                                    placeholder="Enter book name"
+                                   value={name}
                                    onChange={handleChange}
                             />
                         </div>
                         <div className="form-group mt-2">
                             <label>Category</label>
-                            <select name="category" className="form-control" onChange={handleChange}>
+                            <select name="category" className="form-control" value={category} onChange={handleChange}>
                                 {props.categories.map((term) =>
                                     <option value={term}>{term}</option>
                                 )}
@@ -55,7 +55,7 @@ const BookAdd = (props) => {
                         </div>
                         <div className="form-group mt-2">
                             <label>Author</label>
-                            <select name="author" className="form-control" onChange={handleChange}>
+                            <select name="author" className="form-control" value={author} onChange={handleChange}>
                                 {props.authors.map((term) =>
                                     <option value={term.id}>{term.name}</option>
                                 )}
@@ -69,6 +69,7 @@ const BookAdd = (props) => {
                                    name="availableCopies"
                                    placeholder="Available copies"
                                    required
+                                   value={availableCopies}
                                    onChange={handleChange}
                             />
                         </div>

@@ -30,8 +30,11 @@ class App extends Component{
                     <Route path="/books/add" element={<BookAdd categories={this.state.categories}
                           authors={this.state.authors} onAddBook={this.addBook}/>} />
                     <Route path="/books/edit/:id" element={<BookEdit categories={this.state.categories}
-                          authors={this.state.authors} onEditBook={this.editBook} book={this.state.selectedBook}/>} />
-                    <Route path="/" element={<Books books={this.state.books} onDelete={this.deleteBook} onEdit={this.getBook}
+                          authors={this.state.authors}
+                                                                     onEditBook={this.editBook}
+                                                                     book={this.state.selectedBook}/>} />
+                    <Route path="/" element={<Books books={this.state.books} onDelete={this.deleteBook}
+                                                    onEdit={this.getBook}
                                                          mark={this.markBook} />} />
                     <Route path="/categories" element={<Categories categories={this.state.categories} />}/>
                     <Route path="/authors" element={<Authors authors={this.state.authors} />}/>
@@ -88,7 +91,7 @@ class App extends Component{
     }
 
     getBook = (id) => {
-        debugger
+        // debugger
         BooksService.getBook(id)
             .then((data) => {
                 this.setState({

@@ -14,7 +14,7 @@ const bookTerm = (props) => {
             >Delete
             </a>
             <Link className={"btn btn-info mx-2"}
-                onClick={()=>props.onEdit(props.term.id)}
+                // onClick={()=>props.onEdit(props.term.id)}
                   to={`/books/edit/${props.term.id}`}>
                 Edit
             </Link>
