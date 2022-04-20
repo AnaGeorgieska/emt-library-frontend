@@ -1,6 +1,5 @@
 import React from "react";
 import {useNavigate} from 'react-router-dom';
-// import {Axios} from "axios";
 import axios from "../../../custom-axios/axios";
 
 const BookAdd = (props) => {
